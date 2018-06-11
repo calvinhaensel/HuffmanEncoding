@@ -7,7 +7,7 @@ class LinkedList:
     # precede a name but aren't followed by two underscores at the
     # end of the name (i.e. an operator name). 
     class __Node:
-        def __init__(self,item,next=None, priority = 0):
+        def __init__(self,item,next=None, priority = -1000000):
             self.item = item
             self.next = next
             self.priority = priority
@@ -94,7 +94,7 @@ class LinkedList:
     
     def __contains__(self,item):
         
-        cursor = self.first.getNext()
+        cursor = self.front.getNext()
         
         while cursor != None:
             if cursor.getItem() == item:
@@ -233,7 +233,7 @@ def main():
         
     
     lst4 = LinkedList(lst)
-    lst.insert(0,100)
+    lst.insert(0,100, 1)
     lst4 = LinkedList([100]) + lst4
     
     if lst == lst4:
@@ -241,7 +241,7 @@ def main():
     else:
         print("Test 9 Failed")
         
-    lst.insert(1000,333)
+    lst.insert(1000,333,1)
     lst4.append(333)
 
     if lst == lst4:

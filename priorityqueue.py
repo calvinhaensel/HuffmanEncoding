@@ -6,25 +6,43 @@ class PriorityQueue:
     
     def enqueue(self, item, priority):
         ''' Enqueues the item, a, on the queue, q; complexity O(1). '''
-        cursor = self.items.front
-        crsrnxt = cursor.next
-        cursor.priority = priority
+        cursor = self.items
+        crsr = cursor.front
+        crsrnew = crsr
+        crsrnxt = crsr.next
+        #print(cursor.numItems, 'numitems')
+        if cursor.numItems == 1:
+            crsrnxt.priority = crsr.priority
+        #if crsrnxt:
+         #   print(crsrnxt.priority)    
+        crsr.priority = priority
+        #if crsrnxt:
+         #   print(crsrnxt.priority)
+
         
         idx = 0
         while cursor is not None:
-            print(cursor.priority)
-        
-            if crsrnxt is None:
+            if cursor.numItems == 0:
+                #print('empty')
                 self.items.insert(idx, item, priority)
+                #print(crsr.priority)
                 break
-            elif cursor.priority >= crsrnxt.priority:
-                print(crsrnxt.priority)
-                print(idx)
-                print(item)
+            elif crsrnxt is None:
+                self.items.insert(idx, item, priority)
+                #print('lastinsert', crsrnew.priority)
+                while crsr:
+                 #   print(crsr.priority)
+                    if crsr.priority == -1000000:
+                        crsr.priority = priority
+                    crsr = crsr.next
+                break
+            elif crsr.priority >= crsrnxt.priority:
+               # print('priority', crsr.priority, crsrnxt.priority)
                 self.items.insert(idx, item, priority)
                 break
             else:
-                cursor = cursor.next
+                #print('move')
+                crsrnew = crsrnew.next
                 crsrnxt = crsrnxt.next
                 idx +=1
                 
@@ -54,57 +72,36 @@ class PriorityQueue:
             raise RuntimeError('Attempt to access front of empty queue')
         
         return self.items[0]
+    
+    def __iter__(self):
+        for item in self.items:
+            yield item
+
+def print_queue(pq):
+    for item in pq:
+        print(item, end=' ')
+    print()
+    
 def main():
     q = PriorityQueue()
-    items = list(range(10))
-    items2 = []
+    q.enqueue('S', 10)
+    print_queue(q)
     
-    for k in items:
-        q.enqueue(k)
-        
-    if q.front() == 0:
-        print("Test 1 Passed")
-    else:
-        print("Test 1 Failed")
-        
-    while not q.isEmpty():
-        items2.append(q.dequeue())
-    
-    if items2 != items:
-        print("Test 2 Failed")
-    else:
-        print("Test 2 Passed")
+    q.enqueue('t', 2)
+    q.enqueue('T', 9)
+    print_queue(q)
+    q.enqueue('g', 8)
+    print_queue(q)
+    q.enqueue('i', 7)
+    print_queue(q)  
+    q.enqueue('n', 6)
+    print_queue(q)
+    q.enqueue('r', 5)
+    q.enqueue('e', 4)
+    q.enqueue('s', 3)
+   
+    print_queue(q)
 
-    for k in items:
-        q.enqueue(k)   
-      
-    items2 = []
-    
-    while not q.isEmpty():
-        items2.append(q.dequeue())  
-        
-    if items2 != items:
-        print("Test 3 Failed")
-    else:
-        print("Test 3 Passed")
-    
-    try:
-        q.dequeue()
-        print("Test 4 Failed")
-        
-    except RuntimeError:
-        print("Test 4 Passed")
-    except:
-        print("Test 4 Failed")
-
-    try:
-        q.front()
-        print("Test 5 Failed")
-        
-    except RuntimeError:
-        print("Test 5 Passed")
-    except:
-        print("Test 5 Failed")  
         
 if __name__=="__main__":
     main()
